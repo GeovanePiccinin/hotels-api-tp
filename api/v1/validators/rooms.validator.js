@@ -17,7 +17,7 @@ const validate = (method) => {
             .notEmpty()
             .custom((value) => {
               if (!ROOM_TYPES.includes(value)) {
-                throw new Error("invalid room option");
+                throw new Error("Invalid room option!");
               }
               return true;
             })
