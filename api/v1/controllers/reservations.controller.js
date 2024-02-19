@@ -10,6 +10,12 @@ async function getReservations(req, res, next) {
   try {
     const results = await ReservationsService.getReservations(req.pagination);
 
+    if (!results) {
+      res.status(404);
+      res.end();
+      return next();
+    }
+
     cache.set(`getReservations - ${JSON.stringify(req.pagination)}`, results);
     res.status(200);
     res.send(results);
@@ -22,6 +28,12 @@ async function getReservations(req, res, next) {
 async function getReservation(req, res, next) {
   try {
     const reservation = await ReservationsService.getReservation(req.params.id);
+
+    if (!reservation) {
+      res.status(404);
+      res.end();
+      return next();
+    }
     res.status(200).send(reservation);
     logger.info("GET /reservations/:id");
   } catch (err) {

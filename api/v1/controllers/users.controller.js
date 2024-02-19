@@ -9,6 +9,12 @@ async function getUsers(req, res, next) {
   try {
     const results = await UsersService.getUsers(req.pagination);
 
+    if (!results) {
+      res.status(404);
+      res.end();
+      return next();
+    }
+
     cache.set(`getUsers - ${JSON.stringify(req.pagination)}`, results);
     res.status(200);
     res.send(results);
@@ -21,6 +27,13 @@ async function getUsers(req, res, next) {
 async function getUser(req, res, next) {
   try {
     const User = await UsersService.getUser(req.params.id);
+
+    if (!User) {
+      res.status(404);
+      res.end();
+      return next();
+    }
+
     res.status(200).send(User);
     logger.info("GET /Users/:id");
   } catch (err) {

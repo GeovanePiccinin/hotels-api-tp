@@ -13,6 +13,12 @@ async function getRooms(req, res, next) {
     /* ATIVIDADE 8: aplique o cache para esse endpoint */
     const results = await RoomsService.getRooms();
 
+    if (!results) {
+      res.status(404);
+      res.end();
+      return next();
+    }
+
     /* ATIVIDADE 6: Corrija os status code das respostas*/
     res.status(218);
     res.send(results);
@@ -26,6 +32,12 @@ async function getRooms(req, res, next) {
 async function getRoom(req, res, next) {
   try {
     const room = await RoomsService.getRoom(req.params.id);
+
+    if (!room) {
+      res.status(404);
+      res.end();
+      return next();
+    }
 
     /* ATIVIDADE 6: Corrija os status code das respostas*/
     res.status(218).send(room);

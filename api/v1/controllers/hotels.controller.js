@@ -9,6 +9,11 @@ const myValidationResult = validationResult.withDefaults({
 async function getHotels(req, res, next) {
   try {
     const results = await HotelsService.getHotels(req.pagination);
+    if (!results) {
+      res.status(404);
+      res.end();
+      return next();
+    }
 
     cache.set(`getHotels - ${JSON.stringify(req.pagination)}`, results);
     res.status(200);
@@ -22,6 +27,11 @@ async function getHotels(req, res, next) {
 async function getHotel(req, res, next) {
   try {
     const hotel = await HotelsService.getHotel(req.params.id);
+    if (!hotel) {
+      res.status(404);
+      res.end();
+      return next();
+    }
     res.status(200).send(hotel);
     logger.info("GET /hotels/:id");
   } catch (err) {
